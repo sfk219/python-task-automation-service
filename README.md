@@ -1,20 +1,28 @@
 # Python Task Automation REST Service
 
-A Python/FastAPI task scheduling demonstration with SQLite queue, a separate background worker, Docker Compose and API tests.
+A working learning project: FastAPI REST service, persistent SQLite task queue, separate background worker and tests. Only predefined safe operations are supported; user-submitted code is not executed.
 
-**Technologies:** Python, FastAPI, SQLite, Docker Compose.
+## Setup
+```bash
+python -m venv .venv
+# Activate venv, then:
+pip install -r requirements-dev.txt
+uvicorn task_service.app:app --reload
+```
+In another terminal, start the background processor:
+```bash
+python -m task_service.worker
+```
+Open [http://localhost:8000/docs](http://localhost:8000/docs).
 
-## Portfolio context
-This repository is an independently authored educational demonstration aligned with technologies in my professional background and CV. It does not contain employer-owned code or real customer data.
+Example:
+```bash
+curl -X POST http://localhost:8000/tasks -H "Content-Type: application/json" -d '{"kind":"uppercase","text":"hello"}'
+```
 
-## What it demonstrates
-A Python/FastAPI task scheduling demonstration with SQLite queue, a separate background worker, Docker Compose and API tests.
+## Tests
+```bash
+pytest -q
+```
 
-## Limitations
-Run `docker compose up --build` after obtaining the complete source package.
-
-## Source code
-The full working demonstration was prepared as part of my portfolio package; source files and tests will be added separately. This README alone does not constitute a working implementation.
-
-## About the author
-Samra Faisal Khan — MSc Software Engineering (NUST), based in Germany. [GitHub profile](https://github.com/sfk219) · [LinkedIn](https://www.linkedin.com/in/samra-faisal-khan-6a5232142/)
+**Tech:** Python, FastAPI, Pydantic, REST APIs, SQLite, async-style background task processing. Single-host demonstration; no production message broker.
